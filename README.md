@@ -26,7 +26,7 @@ Copy the template and fill in your device's values:
 cp .env.example .env
 ```
 
-# edit .env: set OPTO_HOST and OPTO_API_KEY at a minimum
+edit .env: set OPTO_HOST and OPTO_API_KEY at a minimum
 
 Supported output modes:
 
