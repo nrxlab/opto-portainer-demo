@@ -11,13 +11,22 @@ GET /manage/api/v1/io/local/modules/<module>/digital/values
 
 It discovers channel configuration once at startup and publishes a compact name-keyed JSON payload.
 
+# deployments
+
+Clone this repository
+```
+git clone https://github.com/nrxlab/opto-portainer-demo.git
+```
+
 ## configure
 
-copy the template and fill in your device's values:
+Copy the template and fill in your device's values:
 
 ```bash
 cp .env.example .env
 ```
+
+# edit .env: set OPTO_HOST and OPTO_API_KEY at a minimum
 
 Supported output modes:
 
@@ -25,22 +34,9 @@ Supported output modes:
 - `mqtt`
 - `both`
 
-## quick start: clone + compose (prebuilt image)
-
-typical approach for the demo — no Go toolchain or local build needed, the collector image is pulled from Docker Hub:
-
-```bash
-git clone https://github.com/nrxlab/opto-portainer-demo.git
-cd option3-rest-collector
-cp .env.example .env
-# edit .env: set OPTO_HOST and OPTO_API_KEY at a minimum
-
-docker compose up -d
-```
-
 ## build locally instead
 
-if you want to build the collector image yourself (uses the `build:` section in `compose.yml`):
+If you want to build the collector image yourself (uses the `build:` section in `compose.yml`):
 
 ```bash
 docker compose up --build
@@ -58,7 +54,7 @@ docker compose run --rm opto-rio-rest-collector --discover
 docker compose up -d
 ```
 
-follow the logs:
+Follow the logs:
 
 ```bash
 docker compose logs -f opto-rio-rest-collector
@@ -66,13 +62,13 @@ docker compose logs -f opto-rio-rest-collector
 
 ## subscribe to the broker
 
-from another shell:
+From another shell:
 
 ```bash
 docker compose exec mosquitto mosquitto_sub -t 'opto/rio/#' -v
 ```
 
-using `mosquitto-clients` if installed:
+Using `mosquitto-clients` if installed:
 
 ```bash
 mosquitto_sub -h localhost -p 1883 -t 'opto/rio/#' -v
@@ -95,4 +91,3 @@ mosquitto_sub -h localhost -p 1883 -t 'opto/rio/#' -v
 ```
 
 Set `OPTO_INCLUDE_RAW=true` to also include raw packed analog/digital arrays.
-
