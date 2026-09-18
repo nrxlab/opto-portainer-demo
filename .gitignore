@@ -1,0 +1,5 @@
+# secrets / local config
+.env
+
+# build artifacts
+/out/

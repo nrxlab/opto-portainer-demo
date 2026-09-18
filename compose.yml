@@ -1,0 +1,37 @@
+services:
+  mosquitto:
+    image: eclipse-mosquitto:2
+    restart: unless-stopped
+    ports:
+      - "1883:1883"
+    volumes:
+      - ./mosquitto.conf:/mosquitto/config/mosquitto.conf:ro
+      - mosquitto-data:/mosquitto/data
+      - mosquitto-log:/mosquitto/log
+
+  opto-rio-rest-collector:
+    image: docker.io/portainermatt/opto-portainer-demo:latest
+    restart: unless-stopped
+    depends_on:
+      - mosquitto
+    environment:
+      OPTO_HOST: ${OPTO_HOST:?set OPTO_HOST}
+      OPTO_API_KEY: ${OPTO_API_KEY:?set OPTO_API_KEY}
+      OPTO_DEVICE: ${OPTO_DEVICE:-local}
+      OPTO_MODULE: ${OPTO_MODULE:-0}
+      OPTO_ANALOG_CHANNELS: ${OPTO_ANALOG_CHANNELS:-8}
+      OPTO_POLL_INTERVAL_MS: ${OPTO_POLL_INTERVAL_MS:-500}
+      OPTO_TLS_INSECURE: ${OPTO_TLS_INSECURE:-true}
+      OPTO_INCLUDE_RAW: ${OPTO_INCLUDE_RAW:-false}
+      OUTPUT_MODE: ${OUTPUT_MODE:-mqtt}
+      MQTT_URL: ${MQTT_URL:-tcp://mosquitto:1883}
+      MQTT_TOPIC: ${MQTT_TOPIC:-opto/rio/grv-r7-mm1001-10/state}
+      MQTT_CLIENT_ID: ${MQTT_CLIENT_ID:-opto-rio-rest-collector}
+      MQTT_QOS: ${MQTT_QOS:-0}
+      MQTT_RETAIN: ${MQTT_RETAIN:-false}
+      MQTT_USERNAME: ${MQTT_USERNAME:-}
+      MQTT_PASSWORD: ${MQTT_PASSWORD:-}
+
+volumes:
+  mosquitto-data:
+  mosquitto-log:
