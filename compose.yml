@@ -10,7 +10,7 @@ services:
       - mosquitto-log:/mosquitto/log
 
   opto-rio-rest-collector:
-    image: docker.io/portainermatt/opto-portainer-demo:latest
+    image: ghcr.io/nrxlab/opto-portainer-demo:1.0.0
     restart: unless-stopped
     depends_on:
       - mosquitto
